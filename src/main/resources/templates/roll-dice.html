@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Roll Dice</title>
+</head>
+<body>
+<h2>Guess a number: </h2>
+<form action="/roll-dice/" method="post">
+    <a href="/roll-dice/1">1</a>
+    <a href="/roll-dice/2">2</a>
+    <a href="/roll-dice/3">3</a>
+    <a href="/roll-dice/4">4</a>
+    <a href="/roll-dice/5">5</a>
+    <a href="/roll-dice/6">6</a>
+</form>
+
+<h2 th:text="${n}"></h2>
+
+</body>
+</html>
