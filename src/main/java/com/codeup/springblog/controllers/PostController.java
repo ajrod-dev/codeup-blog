@@ -1,5 +1,6 @@
 package com.codeup.springblog.controllers;
 import com.codeup.springblog.models.Post;
+import com.codeup.springblog.repositories.PostRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,13 +10,15 @@ import java.util.List;
 @Controller
 class PostController {
 
+    private PostRepository postDao;
+
+    public PostController(PostRepository postDao){
+        this.postDao = postDao;
+    }
+
     @GetMapping("/posts")
-    public String returnPosts(Model model){
-        List<Post> allPosts = new ArrayList<Post>();
-        allPosts.add(new Post("First Post", "Hello World"));
-        allPosts.add(new Post("Second Post", "Learning Spring"));
-        allPosts.add(new Post("Third Post", "And ThymeLeaf."));
-        model.addAttribute("posts", allPosts);
+    public String index(Model model){
+        model.addAttribute("posts", postDao.findAll());
         return "/posts/index";
     }
 
@@ -27,12 +30,18 @@ class PostController {
 
     @GetMapping("/posts/create")
     public String returnPostsForm(){
-        return "/posts/create";
+        return "posts/create";
     }
 
     @PostMapping("/posts/create")
-    public String savePost(){
-        return null;
+    public String createPost(@RequestParam(name="title") String title, @RequestParam(name="body") String body){
+        try {
+            Post newPost = new Post(title, body);
+            postDao.save(newPost);
+            return "redirect:/posts";
+        }catch(Exception e){
+            throw new RuntimeException("Error adding new post to postDao");
+        }
     }
 
 
