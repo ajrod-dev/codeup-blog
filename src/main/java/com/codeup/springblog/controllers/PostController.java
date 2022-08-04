@@ -23,8 +23,8 @@ class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public String returnIndividualPosts(@PathVariable int id, Model model){
-        model.addAttribute("singlePost", new Post("4th Post", "I forgot to add Hibernate to list of things."));
+    public String returnIndividualPosts(@PathVariable long id, Model model){
+        model.addAttribute("singlePost", postDao.getById(id));
         return "/posts/show";
     }
 
@@ -34,7 +34,9 @@ class PostController {
     }
 
     @PostMapping("/posts/create")
-    public String createPost(@RequestParam(name="title") String title, @RequestParam(name="body") String body){
+    public String createPost(
+            @RequestParam(name="title") String title,
+            @RequestParam(name="body") String body){
         try {
             Post newPost = new Post(title, body);
             postDao.save(newPost);
