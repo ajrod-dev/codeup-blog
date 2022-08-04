@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="partials/fragment :: head('Viewing All Posts')"></head>
 <body>
-<main>
+<nav th:replace="partials/fragment :: navbar"></nav>
+<main class="container">
     <div th:each="post : ${posts}">
         <h1 th:text="${post.title}"></h1>
         <p th:text="${post.body}"></p>

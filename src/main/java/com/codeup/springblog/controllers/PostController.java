@@ -20,7 +20,8 @@ class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public String returnIndividualPosts(@PathVariable int id){
+    public String returnIndividualPosts(@PathVariable int id, Model model){
+        model.addAttribute("singlePost", new Post("4th Post", "I forgot to add Hibernate to list of things."));
         return "/posts/show";
     }
 
