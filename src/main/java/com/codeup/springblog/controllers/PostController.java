@@ -28,6 +28,7 @@ class PostController {
     @GetMapping("/posts/{id}")
     public String returnIndividualPosts(@PathVariable long id, Model model){
         model.addAttribute("singlePost", postDao.getById(id));
+        model.addAttribute("singleUser", postDao.getById(id).getUser());
         return "/posts/show";
     }
 
