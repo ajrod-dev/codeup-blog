@@ -33,6 +33,10 @@
                             <button type="submit" id="createPost" class="btn btn-primary">
                                 Create
                             </button>
+                            <label for="user">Choose User <span class="require">*</span></label>
+                            <select name="user" id="user" class="custom-select">
+                                <option th:each="user : ${users}" th:text="${user.username}" th:value="${user.id}"></option>
+                            </select>
                         </div>
 
                     </form>
