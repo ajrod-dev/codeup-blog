@@ -35,22 +35,37 @@ class PostController {
     @GetMapping("/posts/create")
     public String returnUsersForm(Model model){
         model.addAttribute("users", userDao.findAll());
+        model.addAttribute("post", new Post());
         return "posts/create";
     }
 
     @PostMapping("/posts/create")
-    public String createPost(
-            @RequestParam(name="user") long id,
-            @RequestParam(name="title") String title,
-            @RequestParam(name="body") String body){
+    public String createPost(@ModelAttribute("post") Post post){
         try {
-            Post newPost = new Post(userDao.getById(id),title, body);
-            postDao.save(newPost);
+            post.setUser(userDao.getById(1L));
+            postDao.save(post);
             return "redirect:/posts";
         }catch(Exception e){
             throw new RuntimeException("Error adding new post to postDao");
         }
     }
+
+    @GetMapping("/posts/{id}/edit")
+    public String showEditPost(@PathVariable long id, Model model){
+        model.addAttribute("users", userDao.findAll());
+        model.addAttribute("post", postDao.getById(id));
+        return "posts/create";
+    }
+//
+//    @PostMapping("/posts/{id}/edit")
+//    public String editPost(@ModelAttribute Post post){
+//        try {
+//            postDao.save(post);
+//            return "redirect:/posts";
+//        }catch(Exception e){
+//            throw new RuntimeException("Error adding new post to postDao");
+//        }
+//    }
 
 
 
