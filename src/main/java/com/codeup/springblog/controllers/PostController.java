@@ -1,4 +1,5 @@
 package com.codeup.springblog.controllers;
+import com.codeup.springblog.models.EmailService;
 import com.codeup.springblog.models.Post;
 import com.codeup.springblog.repositories.PostRepository;
 import com.codeup.springblog.repositories.UserRepository;
@@ -14,9 +15,12 @@ class PostController {
     private PostRepository postDao;
     private UserRepository userDao;
 
-    public PostController(PostRepository postDao, UserRepository userDao){
+    private EmailService service;
+
+    public PostController(PostRepository postDao, UserRepository userDao, EmailService service){
         this.postDao = postDao;
         this.userDao = userDao;
+        this.service = service;
     }
 
     @GetMapping("/posts")
@@ -44,6 +48,9 @@ class PostController {
         try {
             post.setUser(userDao.getById(1L));
             postDao.save(post);
+            service.prepareAndSend(userDao.getById(1L),
+                    "New Post Alert",
+                    "A new Post was createed by " + userDao.getById(1L).getUsername());
             return "redirect:/posts";
         }catch(Exception e){
             throw new RuntimeException("Error adding new post to postDao");
